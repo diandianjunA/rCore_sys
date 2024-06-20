@@ -11,5 +11,5 @@ pub unsafe fn print_stack_trace() -> () {
         println!("  ra = {:x}, fp = {:x}", saved_ra, saved_fp);
         fp = saved_fp as *const usize;
     }
-    println!("== End Stack Trace ==")
+    println!("== End Stack Trace ==");
 }

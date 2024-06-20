@@ -17,6 +17,9 @@ pub fn syscall(id: usize, args: [usize; 3]) -> isize {
 
 const SYS_WRITE: usize = 64;
 const SYS_EXIT: usize = 93;
+const SYSCALL_YIELD: usize = 124;
+const SYSCALL_GET_TIME: usize = 169;
+const SYSCALL_SBRK: usize = 214;
 
 
 /// 功能：将内存中缓冲区中的数据写入文件。
@@ -35,4 +38,24 @@ pub fn sys_write(fd: usize, buffer: &[u8]) -> isize {
 /// syscall ID：93
 pub fn sys_exit(exit_code: i32) -> isize {
     syscall(SYS_EXIT, [exit_code as usize, 0, 0])
+}
+
+/// 功能：应用主动交出 CPU 所有权并切换到其他应用。
+/// 返回值：总是返回 0。
+/// syscall ID：124
+pub fn sys_yield() -> isize {
+    syscall(SYSCALL_YIELD, [0, 0, 0])
+}
+
+pub fn sys_get_time() -> isize {
+    syscall(SYSCALL_GET_TIME, [0, 0, 0])
+}
+
+/// 功能：调整堆内存大小。
+/// 参数：`size` 表示调整后的堆内存大小。
+/// 返回值：返回调整后的堆内存起始地址。
+/// syscall ID：214
+/// 注意：`size` 为正表示扩大堆内存，为负表示缩小堆内存。
+pub fn sys_sbrk(size: i32) -> isize {
+    syscall(SYSCALL_SBRK, [size as usize, 0, 0])
 }
